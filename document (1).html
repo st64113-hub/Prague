@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>捷克冬季聖誕之旅 🎄 Czech Winter Trip</title>
+    <style>
+      body {
+        font-family: 'Zen Maru Gothic', sans-serif;
+        background-color: #EFECE8;
+        color: #4A443F;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+      /* 可愛冬季波點與雪花感背景 */
+      .cute-bg {
+        background-color: #F7F3EE;
+        background-image: radial-gradient(#E6D7C3 1.5px, transparent 1.5px), radial-gradient(#D4BFA6 1px, #F7F3EE 1px);
+        background-size: 32px 32px;
+        background-position: 0 0, 16px 16px;
+      }
+      /* 隱藏捲軸但保留滑動功能 */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* 日式柔和陰影 */
+      .jp-shadow {
+        box-shadow: 0 6px 20px -4px rgba(120, 95, 73, 0.08), 0 2px 6px -1px rgba(120, 95, 73, 0.04);
+      }
+      .jp-float-shadow {
+        box-shadow: 0 10px 30px -5px rgba(74, 68, 63, 0.18);
+      }
+      /* 標籤顏色 */
+      .tag-eat { background-color: #FFE5D9; color: #D9534F; }
+      .tag-buy { background-color: #FFF3CD; color: #B78103; }
+      .tag-photo { background-color: #E2F0CB; color: #4A8B2C; }
+      .tag-xmas { background-color: #F8D7DA; color: #A71D2A; }
+
+      /* 動畫效果 */
+      .fade-in {
+        animation: fadeIn 0.25s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body class="flex justify-center min-h-screen">
+    <!-- 手機容器 (最大寬度 430px，模擬手機原生體驗) -->
+    <div class="w-full max-w-[430px] cute-bg min-h-screen pb-28 relative shadow-2xl overflow-x-hidden flex flex-col">
+      <!-- ==================== HEADER ==================== -->
+      <header
+        class="bg-snow/90 backdrop-blur-md sticky top-0 z-30 px-5 pt-5 pb-3 rounded-b-[28px] jp-shadow border-b border-milktea"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-1.5 text-xs font-bold text-milktea-dark tracking-wider mb-0.5">
+              <span>❄️ WINTER FAIRYTALE</span>
+              <span class="bg-milktea px-2 py-0.5 rounded-full text-[10px] text-milktea-deep">10 DAYS</span>
+            </div>
+            <h1 class="text-xl font-black text-warmgray-dark tracking-tight flex items-center gap-1.5">
+              捷克冬季聖誕旅行
+              <span class="text-lg">🎄</span>
+            </h1>
+            <p class="text-xs text-warmgray font-medium mt-0.5">
+              <i class="fa-regular fa-calendar-check mr-1 text-milktea-dark"></i>
+              2026/12/22 (二) — 12/31 (四)
+            </p>
+          </div>
+          <div
+            class="w-12 h-12 rounded-2xl bg-milktea-light border-2 border-milktea flex flex-col items-center justify-center text-milktea-deep shadow-inner"
+          >
+            <span class="text-[10px] font-bold leading-none">DEC</span>
+            <span class="text-lg font-black leading-tight">22</span>
+          </div>
+        </div>
+
+        <!-- 日期選擇器 (僅在行程頁顯示) -->
+        <div
+          id="day-selector-bar"
+          class="mt-3 pt-2 border-t border-milktea/50 flex gap-2 overflow-x-auto no-scrollbar pb-1"
+        >
+          <!-- 由 JS 動態生成 Day 1 ~ Day 10 按鈕 -->
+        </div>
+      </header>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <main class="flex-1 px-4 pt-4">
+        <!-- 1. 行程頁 ITINERARY TAB -->
+        <section id="tab-itinerary" class="fade-in space-y-4">
+          <!-- 每日主卡片與景點清單由 JS 渲染 -->
+          <div id="itinerary-content"></div>
+        </section>
+
+        <!-- 2. 指南頁 GUIDE TAB -->
+        <section id="tab-guide" class="hidden fade-in space-y-5 pb-4">
+          <!-- 工具盒標題 -->
+          <div class="bg-milktea-dark text-snow p-4 rounded-3xl jp-shadow flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-bold flex items-center gap-2">
+                <i class="fa-solid fa-toolbox"></i>
+                旅人行前準備工具盒
+              </h2>
+              <p class="text-xs text-milktea-light mt-0.5">點選可勾選、增減數量或新增項目（自動儲存）</p>
+            </div>
+            <i class="fa-solid fa-suitcase-rolling text-3xl text-milktea opacity-80"></i>
+          </div>
+
+          <!-- (1) 行李打包清單 & 購物清單 -->
+          <div class="bg-snow rounded-3xl p-4 jp-shadow border border-milktea">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-warmgray-dark flex items-center gap-2 text-base">
+                <span class="w-7 h-7 rounded-xl bg-milktea flex items-center justify-center text-milktea-deep text-sm">
+                  1
+                </span>
+                行李打包 &amp; 必買清單
+              </h3>
+              <span
+                id="packing-progress"
+                class="text-xs font-bold bg-milktea-light text-milktea-deep px-2.5 py-1 rounded-full"
+              >
+                0% 完成
+              </span>
+            </div>
+
+            <!-- 分類切換 Pills -->
+            <div class="grid grid-cols-4 gap-1.5 bg-milktea-light p-1.5 rounded-2xl mb-3 text-xs font-bold">
+              <button
+                onclick="switchBagCategory('backpack')"
+                id="bag-btn-backpack"
+                class="py-2 rounded-xl bg-snow text-milktea-deep shadow-sm transition"
+              >
+                🎒 隨身包
+              </button>
+              <button
+                onclick="switchBagCategory('carryon')"
+                id="bag-btn-carryon"
+                class="py-2 rounded-xl text-warmgray transition"
+              >
+                🧳 機艙手提
+              </button>
+              <button
+                onclick="switchBagCategory('checked')"
+                id="bag-btn-checked"
+                class="py-2 rounded-xl text-warmgray transition"
+              >
+                📦 托運行李
+              </button>
+              <button
+                onclick="switchBagCategory('shopping')"
+                id="bag-btn-shopping"
+                class="py-2 rounded-xl text-warmgray transition"
+              >
+                🛍️ 購物單
+              </button>
+            </div>
+
+            <!-- 清單內容容器 -->
+            <div id="bag-list-container" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
+
+            <!-- 新增項目輸入框 -->
+            <div class="mt-3 pt-3 border-t border-milktea/60 flex gap-2">
+              <input
+                id="new-item-input"
+                type="text"
+                placeholder="新增物品或伴手禮..."
+                class="flex-1 bg-milktea-light text-xs px-3.5 py-2.5 rounded-xl border border-milktea focus:outline-none focus:border-milktea-dark"
+              />
+              <button
+                onclick="addBagItem()"
+                class="bg-milktea-dark text-snow text-xs font-bold px-4 py-2.5 rounded-xl active:scale-95 transition"
+              >
+                + 新增
+              </button>
+            </div>
+          </div>
+
+          <!-- (2) 捷克旅遊規範提醒 -->
+          <div class="bg-snow rounded-3xl p-4 jp-shadow border border-milktea">
+            <h3 class="font-bold text-warmgray-dark flex items-center gap-2 text-base mb-3">
+              <span class="w-7 h-7 rounded-xl bg-milktea flex items-center justify-center text-milktea-deep text-sm">
+                2
+              </span>
+              捷克冬季旅遊規範提醒
+            </h3>
+            <div class="grid grid-cols-1 gap-2.5 text-xs">
+              <div class="bg-milktea-light/70 p-3 rounded-2xl flex gap-3 items-start">
+                <span class="text-lg">🪙</span>
+                <div>
+                  <p class="font-bold text-warmgray-dark">貨幣與刷卡：捷克克朗 (CZK)</p>
+                  <p class="text-warmgray mt-0.5">
+                    雖為歐盟國但使用克朗（1 CZK ≈ 1.4 TWD）。超市、餐廳多可感應刷卡；但**聖誕市集小攤販、上廁所（約 20
+                    CZK）**必備零錢現金！
+                  </p>
+                </div>
+              </div>
+              <div class="bg-milktea-light/70 p-3 rounded-2xl flex gap-3 items-start">
+                <span class="text-lg">🔌</span>
+                <div>
+                  <p class="font-bold text-warmgray-dark">電壓插座與飯店煮水規範</p>
+                  <p class="text-warmgray mt-0.5">
+                    230V 雙圓孔歐規插座（C/E型）。部分古蹟或歐洲飯店無熱水壺，且多數古蹟建築以鍋爐供暖水，洗澡請間隔
+                    15-20 分鐘。
+                  </p>
+                </div>
+              </div>
+              <div class="bg-milktea-light/70 p-3 rounded-2xl flex gap-3 items-start">
+                <span class="text-lg">🚋</span>
+                <div>
+                  <p class="font-bold text-warmgray-dark">大眾運輸打票規定（極重要！）</p>
+                  <p class="text-warmgray mt-0.5">
+                    布拉格地鐵/電車採榮譽制，買票後**首次上車/進站務必在黃色打卡機印上時間**，未打票視同逃票，查票員罰款高達
+                    1000 CZK！
+                  </p>
+                </div>
+              </div>
+              <div class="bg-milktea-light/70 p-3 rounded-2xl flex gap-3 items-start">
+                <span class="text-lg">🍽️</span>
+                <div>
+                  <p class="font-bold text-warmgray-dark">小費與用餐禮儀</p>
+                  <p class="text-warmgray mt-0.5">
+                    餐廳結帳時直接告訴服務生「湊整數後加 5%~10%」的總金額即可，切勿把小費直接留在桌上離開。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- (3) 緊急資訊 (一鍵撥號) -->
+          <div class="bg-snow rounded-3xl p-4 jp-shadow border border-milktea">
+            <h3 class="font-bold text-warmgray-dark flex items-center gap-2 text-base mb-3">
+              <span class="w-7 h-7 rounded-xl bg-red-100 flex items-center justify-center text-red-600 text-sm">3</span>
+              緊急連絡資訊（點擊可直接撥號）
+            </h3>
+            <div class="grid grid-cols-2 gap-2.5 mb-3">
+              <a
+                href="tel:110"
+                class="bg-red-50 border border-red-200 p-3 rounded-2xl flex items-center justify-between active:scale-95 transition"
+              >
+                <div>
+                  <p class="text-[11px] text-red-500 font-bold">緊急警察報案</p>
+                  <p class="text-lg font-black text-red-700">
+                    110
+                    <span class="text-xs font-normal">/ 158</span>
+                  </p>
+                </div>
+                <i class="fa-solid fa-shield-halved text-red-400 text-xl"></i>
+              </a>
+              <a
+                href="tel:119"
+                class="bg-orange-50 border border-orange-200 p-3 rounded-2xl flex items-center justify-between active:scale-95 transition"
+              >
+                <div>
+                  <p class="text-[11px] text-orange-600 font-bold">消防與急救</p>
+                  <p class="text-lg font-black text-orange-700">
+                    119
+                    <span class="text-xs font-normal">/ 112</span>
+                  </p>
+                </div>
+                <i class="fa-solid fa-truck-medical text-orange-400 text-xl"></i>
+              </a>
+            </div>
+            <div class="bg-milktea-light p-3.5 rounded-2xl border border-milktea text-xs space-y-1.5">
+              <p class="font-bold text-milktea-deep text-sm flex items-center gap-1.5">🇹🇼 駐捷克台北經濟文化代表處</p>
+              <p class="text-warmgray-dark">
+                <i class="fa-solid fa-location-dot w-4 text-milktea-dark"></i>
+                Evropská 2590/33c, 160 00 Praha 6, Czechia
+              </p>
+              <p class="text-warmgray-dark">
+                <i class="fa-solid fa-phone w-4 text-milktea-dark"></i>
+                代表處電話：
+                <a href="tel:+420233320606" class="underline font-bold text-milktea-deep">+420 233 320 606</a>
+              </p>
+              <p class="text-red-600 font-bold">
+                <i class="fa-solid fa-bell w-4"></i>
+                急難救助專線：
+                <a href="tel:+420603166707" class="underline">+420 603 166 707</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- (4) 資料總匯：航班與飯店訂單 -->
+          <div class="bg-snow rounded-3xl p-4 jp-shadow border border-milktea">
+            <h3 class="font-bold text-warmgray-dark flex items-center gap-2 text-base mb-3">
+              <span class="w-7 h-7 rounded-xl bg-milktea flex items-center justify-center text-milktea-deep text-sm">
+                4
+              </span>
+              資料總匯：航班 &amp; 飯店憑證
+            </h3>
+
+            <!-- 航班卡片 (依據圖片精確導入) -->
+            <div
+              class="bg-gradient-to-br from-milktea-light to-snow p-3.5 rounded-2xl border border-milktea mb-3 space-y-3"
+            >
+              <div class="flex items-center justify-between border-b border-milktea/60 pb-2">
+                <span class="text-xs font-bold text-milktea-deep flex items-center gap-1.5">
+                  <i class="fa-solid fa-plane-departure"></i>
+                  中華航空 China Airlines
+                </span>
+                <span class="text-[10px] bg-sky-100 text-sky-700 font-bold px-2 py-0.5 rounded-full">直飛航班</span>
+              </div>
+              <!-- 去程 -->
+              <div class="flex items-center justify-between text-xs">
+                <div>
+                  <span class="bg-sky-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">去程 12/22(二)</span>
+                  <p class="text-base font-black text-warmgray-dark mt-1">
+                    23:50
+                    <span class="text-xs font-normal">TPE 桃園</span>
+                  </p>
+                </div>
+                <div class="text-center px-2">
+                  <p class="text-[10px] text-warmgray">13h 55m</p>
+                  <div class="w-16 h-0.5 bg-milktea-dark relative my-1">
+                    <i
+                      class="fa-solid fa-plane text-[10px] text-milktea-deep absolute -top-1.5 left-1/2 -translate-x-1/2"
+                    ></i>
+                  </div>
+                  <p class="text-[10px] text-milktea-dark font-bold">CI067</p>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] text-warmgray font-bold">12/23(三) 抵達</span>
+                  <p class="text-base font-black text-warmgray-dark mt-1">
+                    06:45
+                    <sup class="text-red-500 text-[10px]">+1</sup>
+                    <span class="text-xs font-normal">PRG 布拉格</span>
+                  </p>
+                </div>
+              </div>
+              <!-- 回程 -->
+              <div class="flex items-center justify-between text-xs pt-2 border-t border-dashed border-milktea">
+                <div>
+                  <span class="bg-sky-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">回程 12/30(三)</span>
+                  <p class="text-base font-black text-warmgray-dark mt-1">
+                    10:40
+                    <span class="text-xs font-normal">PRG 布拉格</span>
+                  </p>
+                </div>
+                <div class="text-center px-2">
+                  <p class="text-[10px] text-warmgray">11h 40m</p>
+                  <div class="w-16 h-0.5 bg-milktea-dark relative my-1">
+                    <i
+                      class="fa-solid fa-plane text-[10px] text-milktea-deep absolute -top-1.5 left-1/2 -translate-x-1/2"
+                    ></i>
+                  </div>
+                  <p class="text-[10px] text-milktea-dark font-bold">CI068</p>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] text-warmgray font-bold">12/31(四) 抵達</span>
+                  <p class="text-base font-black text-warmgray-dark mt-1">
+                    05:20
+                    <sup class="text-red-500 text-[10px]">+1</sup>
+                    <span class="text-xs font-normal">TPE 桃園</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 飯店訂單雲端清單 -->
+            <div class="space-y-2 text-xs">
+              <div
+                onclick="openVoucherModal('Day 2 皮耳森住宿憑證', 'Courtyard Pilsen / Vienna House Easy Pilsen 或同級', '2026/12/23 入住 1 晚（含飯店自助早餐）')"
+                class="p-3 rounded-2xl bg-milktea-light/60 border border-milktea flex items-center justify-between cursor-pointer active:scale-[0.99] transition"
+              >
+                <div>
+                  <p class="font-bold text-warmgray-dark">🏨 Day 2 皮耳森 (Plzeň)</p>
+                  <p class="text-warmgray text-[11px]">Courtyard Pilsen / Vienna House 或同級</p>
+                </div>
+                <span
+                  class="bg-snow text-milktea-deep font-bold px-2.5 py-1.5 rounded-xl border border-milktea shadow-sm flex items-center gap-1"
+                >
+                  <i class="fa-solid fa-cloud-arrow-down"></i>
+                  雲端憑證
+                </span>
+              </div>
+
+              <div
+                onclick="openVoucherModal('Day 3 庫倫洛夫古鎮住宿憑證', 'Hotel Grand / Hotel Old Inn / Zlaty Andel 或同級', '2026/12/24 平安夜入住 1 晚（提醒：古蹟飯店多為鍋爐熱水，請間隔洗澡）')"
+                class="p-3 rounded-2xl bg-milktea-light/60 border border-milktea flex items-center justify-between cursor-pointer active:scale-[0.99] transition"
+              >
+                <div>
+                  <p class="font-bold text-warmgray-dark">🏨 Day 3 庫倫洛夫 (Český Krumlov)</p>
+                  <p class="text-warmgray text-[11px]">Grand / Old Inn / Zlaty Andel 或同級</p>
+                </div>
+                <span
+                  class="bg-snow text-milktea-deep font-bold px-2.5 py-1.5 rounded-xl border border-milktea shadow-sm flex items-center gap-1"
+                >
+                  <i class="fa-solid fa-cloud-arrow-down"></i>
+                  雲端憑證
+                </span>
+              </div>
+
+              <div
+                onclick="openVoucherModal('Day 4-5 布爾諾連泊住宿憑證', 'Courtyard Brno / Best Western / Orea Hotel 或同級', '2026/12/25 - 12/27 連住 2 晚（含飯店自助早餐）')"
+                class="p-3 rounded-2xl bg-milktea-light/60 border border-milktea flex items-center justify-between cursor-pointer active:scale-[0.99] transition"
+              >
+                <div>
+                  <p class="font-bold text-warmgray-dark">🏨 Day 4-5 布爾諾連泊 (Brno)</p>
+                  <p class="text-warmgray text-[11px]">Courtyard Brno / Best Western 或同級</p>
+                </div>
+                <span
+                  class="bg-snow text-milktea-deep font-bold px-2.5 py-1.5 rounded-xl border border-milktea shadow-sm flex items-center gap-1"
+                >
+                  <i class="fa-solid fa-cloud-arrow-down"></i>
+                  雲端憑證
+                </span>
+              </div>
+
+              <div
+                onclick="openVoucherModal('Day 6-8 布拉格三晚連泊憑證', 'NH Prague City / Royal Prague / Vienna House 或同級', '2026/12/27 - 12/30 連住 3 晚（含每日自助早餐）')"
+                class="p-3 rounded-2xl bg-milktea-light/60 border border-milktea flex items-center justify-between cursor-pointer active:scale-[0.99] transition"
+              >
+                <div>
+                  <p class="font-bold text-warmgray-dark">🏨 Day 6-8 布拉格三連泊 (Prague)</p>
+                  <p class="text-warmgray text-[11px]">NH Prague / Royal Prague 或同級</p>
+                </div>
+                <span
+                  class="bg-snow text-milktea-deep font-bold px-2.5 py-1.5 rounded-xl border border-milktea shadow-sm flex items-center gap-1"
+                >
+                  <i class="fa-solid fa-cloud-arrow-down"></i>
+                  雲端憑證
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. 天氣頁 WEATHER TAB -->
+        <section id="tab-weather" class="hidden fade-in space-y-4 pb-4">
+          <!-- 捷克主要城市位置地圖圖示展示 -->
+          <div class="bg-snow rounded-3xl p-4 jp-shadow border border-milktea">
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="text-base font-bold text-warmgray-dark flex items-center gap-2">
+                <i class="fa-solid fa-map-location-dot text-milktea-dark"></i>
+                捷克冬季巡禮・城市雪況地圖
+              </h2>
+              <span class="text-[10px] bg-milktea-light text-milktea-deep font-bold px-2 py-0.5 rounded-full">
+                點選城市看概況
+              </span>
+            </div>
+
+            <!-- 互動式 SVG 捷克路線地圖 -->
+            <div class="relative bg-milktea-light/80 rounded-2xl p-3 border border-milktea overflow-hidden">
+              <svg viewBox="0 0 360 190" class="w-full h-auto">
+                <!-- 捷克輪廓簡化背景 -->
+                <path
+                  d="M25,75 Q60,30 140,35 T270,55 Q335,75 340,115 Q310,160 220,160 T95,165 Q40,140 25,75 Z"
+                  fill="#FCFBF9"
+                  stroke="#D4BFA6"
+                  stroke-width="2.5"
+                  stroke-dasharray="4 2"
+                ></path>
+                <!-- 行車路線虛線 -->
+                <path
+                  d="M135,75 L60,72 L75,110 L145,155 L205,135 L255,140 L285,95 L255,140 L135,75"
+                  fill="none"
+                  stroke="#A68A71"
+                  stroke-width="2"
+                  stroke-dasharray="4 4"
+                ></path>
+
+                <!-- 1. 卡洛維瓦利 KV -->
+                <g
+                  class="cursor-pointer"
+                  onclick="alert('📍 卡洛維瓦利 &amp; 瑪麗安斯凱\n山谷溫泉區濕度較高，清晨易有薄霧與結霜，體感約 -5°C。')"
+                >
+                  <circle cx="60" cy="72" r="7" fill="#A68A71"></circle>
+                  <text x="30" y="58" font-size="10" font-weight="bold" fill="#4A443F">♨️ 卡洛維瓦利</text>
+                </g>
+                <!-- 2. 皮耳森 Plzen -->
+                <g
+                  class="cursor-pointer"
+                  onclick="alert('📍 皮耳森 Plzeň\n波西米亞西部重鎮，冬季氣溫約 -3°C ~ 1°C，酒窖內部恆溫約 7°C。')"
+                >
+                  <circle cx="75" cy="110" r="6" fill="#D4BFA6"></circle>
+                  <text x="32" y="125" font-size="10" font-weight="bold" fill="#4A443F">🍺 皮耳森</text>
+                </g>
+                <!-- 3. 布拉格 Prague -->
+                <g
+                  class="cursor-pointer"
+                  onclick="alert('📍 布拉格 Prague\n伏爾塔瓦河畔風大，早晚體感可達 -6°C，老城廣場與城堡區有浪漫降雪機會！')"
+                >
+                  <circle cx="135" cy="75" r="9" fill="#D9534F" stroke="#FFF" stroke-width="2"></circle>
+                  <text x="115" y="60" font-size="11" font-weight="900" fill="#A71D2A">🎄 布拉格</text>
+                </g>
+                <!-- 4. 庫倫洛夫 CK -->
+                <g
+                  class="cursor-pointer"
+                  onclick="alert('📍 庫倫洛夫 Český Krumlov\n南波西米亞山谷古鎮，降雪機率最高(65%)！紅屋頂覆蓋白雪超夢幻，石板路請穿防滑靴。')"
+                >
+                  <circle cx="145" cy="155" r="7" fill="#A68A71"></circle>
+                  <text x="105" y="175" font-size="10" font-weight="bold" fill="#4A443F">🏰 庫倫洛夫</text>
+                </g>
+                <!-- 5. 特奇 Telc -->
+                <g
+                  class="cursor-pointer"
+                  onclick="alert('📍 特奇 Telč\n湖泊環繞的世界遺產廣場，冬季湖面常結冰積雪，空曠處風力較強。')"
+                >
+                  <circle cx="205" cy="135" r="6" fill="#D4BFA6"></circle>
+                  <text x="190" y="122" font-size="10" font-weight="bold" fill="#4A443F">🏘️ 特奇</text>
+                </g>
+                <!-- 6. 布爾諾 Brno -->
+                <g
+                  class="cursor-pointer"
+                  onclick="alert('📍 布爾諾 Brno\n摩拉維亞首府，聖誕市集熱鬧溫馨，氣溫約 -3°C ~ 2°C。')"
+                >
+                  <circle cx="255" cy="140" r="7" fill="#A68A71"></circle>
+                  <text x="240" y="160" font-size="10" font-weight="bold" fill="#4A443F">🎡 布爾諾</text>
+                </g>
+                <!-- 7. 歐洛慕奇 Olomouc -->
+                <g
+                  class="cursor-pointer"
+                  onclick="alert('📍 歐洛慕奇 Olomouc\n偏東北側氣溫更低，降雪機率 60%，必喝老城廣場熱紅酒暖身！')"
+                >
+                  <circle cx="285" cy="95" r="7" fill="#A68A71"></circle>
+                  <text x="260" y="80" font-size="10" font-weight="bold" fill="#4A443F">⛄ 歐洛慕奇</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- 每日天氣預報與穿著建議列表 -->
+          <div id="weather-list-container" class="space-y-3">
+            <!-- 由 JS 渲染 10 天詳細雪況與穿著 -->
+          </div>
+        </section>
+      </main>
+
+      <!-- ==================== 雲端憑證彈出視窗 MODAL ==================== -->
+      <div
+        id="voucher-modal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden items-center justify-center p-5"
+      >
+        <div
+          class="bg-snow w-full max-w-sm rounded-3xl p-5 jp-shadow border-2 border-milktea animate-[fadeIn_0.2s_ease-out]"
+        >
+          <div class="flex items-center justify-between border-b border-milktea pb-3">
+            <h4 id="modal-title" class="font-bold text-warmgray-dark text-base">憑證標題</h4>
+            <button
+              onclick="closeVoucherModal()"
+              class="w-8 h-8 rounded-full bg-milktea-light text-warmgray-dark flex items-center justify-center"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="py-4 space-y-3 text-xs">
+            <div class="bg-milktea-light p-3 rounded-2xl">
+              <p class="text-warmgray font-bold">預訂飯店群組：</p>
+              <p id="modal-hotel" class="text-warmgray-dark font-bold text-sm mt-0.5"></p>
+            </div>
+            <p id="modal-desc" class="text-warmgray-dark leading-relaxed"></p>
+            <div class="border-2 border-dashed border-milktea rounded-2xl p-4 text-center bg-snow">
+              <i class="fa-solid fa-qrcode text-4xl text-milktea-deep mb-1"></i>
+              <p class="text-[11px] text-warmgray">團體電子住宿憑證已同步於領隊與雲端夾</p>
+            </div>
+          </div>
+          <button
+            onclick="closeVoucherModal()"
+            class="w-full py-2.5 bg-milktea-dark text-snow font-bold rounded-xl text-xs"
+          >
+            確認關閉
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== 底部浮動導覽列 FLOATING BOTTOM NAV ==================== -->
+      <nav
+        class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-[390px] bg-snow/95 backdrop-blur-md rounded-full p-1.5 jp-float-shadow border border-milktea z-40 flex items-center justify-between"
+      >
+        <button
+          onclick="switchMainTab('itinerary')"
+          id="nav-itinerary"
+          class="flex-1 py-2.5 rounded-full flex items-center justify-center gap-2 text-xs font-bold bg-milktea-dark text-snow shadow-sm transition-all"
+        >
+          <i class="fa-solid fa-route"></i>
+          <span>行程</span>
+        </button>
+        <button
+          onclick="switchMainTab('guide')"
+          id="nav-guide"
+          class="flex-1 py-2.5 rounded-full flex items-center justify-center gap-2 text-xs font-bold text-warmgray hover:text-warmgray-dark transition-all"
+        >
+          <i class="fa-solid fa-book-open"></i>
+          <span>指南</span>
+        </button>
+        <button
+          onclick="switchMainTab('weather')"
+          id="nav-weather"
+          class="flex-1 py-2.5 rounded-full flex items-center justify-center gap-2 text-xs font-bold text-warmgray hover:text-warmgray-dark transition-all"
+        >
+          <i class="fa-solid fa-snowflake"></i>
+          <span>天氣</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- ==================== JAVASCRIPT 資料與互動邏輯 ==================== -->
+    <script>
+      // 1. 完整 10 天捷克行程資料庫 (依據提供之圖片 + 補充耶誕活動、交通時間、停留時間、拍照Tips、必吃必買、雪況穿著)
+      const tripData = [
+        {
+          day: 1,
+          date: "12/22 (二)",
+          location: "台北桃園 TPE ✈️ 布拉格",
+          routeDesc: "桃園國際機場 ➔ 直飛捷克布拉格 (飛行 13h55m)",
+          meals: { b: "溫暖的家", l: "溫暖的家", d: "機上精緻簡餐" },
+          hotel: "夜宿中華航空豪華客機 CI067",
+          weather: { temp: "-1°C ~ 3°C", feel: "-4°C", snowProb: "20%", snowDepth: "0 cm", city: "桃園 ➔ 布拉格夜空" },
+          outfit: "機上舒適寬鬆連帽衫 + 保濕面膜/護唇膏 + 隨身攜帶羽絨外套（下機即穿）",
+          snowNote: "長途飛行乾燥請多補充水分；隔日清晨抵達布拉格機場氣溫接近 0°C，請把厚外套放在隨身袋！",
+          spots: [
+            {
+              category: "交通",
+              catIcon: "fa-plane-departure",
+              name: "桃園國際機場 (TPE) 集合報到",
+              stayTime: "建議停留 3 小時",
+              driveTime: "23:50 準時起飛",
+              desc: "搭乘中華航空 CI067 直飛班機（23:50 起飛），展開浪漫的捷克冬季聖誕童話之旅。",
+              tags: [
+                { type: "buy", text: "必買：機場免稅歐規轉接頭 / 保濕乳液" },
+                { type: "photo", text: "必拍：登機門與護照機票出發合照" }
+              ],
+              photoTip: "📸 拍照小技巧：利用候機室大片玻璃窗逆光拍攝剪影，搭配登機證特寫超有出發儀式感！",
+              parkingGas: "🅿️ 桃園機場第一/二航廈地下停車場｜⛽ 國道二號機場支線沿途設有中油站",
+              mapQuery: "Taoyuan+International+Airport"
+            }
+          ]
+        },
+        {
+          day: 2,
+          date: "12/23 (三)",
+          location: "布拉格 ➔ 卡洛維瓦利 ➔ 瑪麗安斯凱 ➔ 皮耳森",
+          routeDesc: "布拉格 -120km- 卡洛維瓦利 -56km- 瑪麗安斯凱 -75km- 捷克小鎮(皮耳森)",
+          meals: { b: "機上套餐", l: "中式六菜一湯", d: "當地特色料理" },
+          hotel: "Courtyard Pilsen 或 Vienna House Pilsen 或 Hotel Rous 或同級",
+          weather: { temp: "-3°C ~ 1°C", feel: "-7°C", snowProb: "45%", snowDepth: "2 cm", city: "卡洛維瓦利 / 瑪麗安斯凱" },
+          outfit: "發熱衣 + 刷毛毛衣 + 防風長版羽絨衣 + 羊毛圍巾 + 觸控手套",
+          snowNote: "西波西米亞溫泉山谷濕氣較重，清晨石板路易有薄霜，喝溫泉水時熱氣繚繞非常夢幻！",
+          spots: [
+            {
+              category: "景點",
+              catIcon: "fa-hot-tub-person",
+              name: "卡洛維瓦利 (Karlovy Vary) 國王溫泉小鎮",
+              stayTime: "建議停留 2.5 小時",
+              driveTime: "距布拉格機場約 120km (車程約 1小時40分)",
+              desc: "捷克最著名的皇家溫泉鄉！漫步特普拉河畔的磨坊溫泉迴廊、市場溫泉迴廊，欣賞007電影《皇家夜總會》取景地普普大飯店。",
+              tags: [
+                { type: "eat", text: "必吃：現烤溫泉薄餅 (Lázeňské oplatky)" },
+                { type: "buy", text: "必買：可愛造型陶瓷溫泉杯、溫泉酒(Becherovka)" },
+                { type: "photo", text: "必拍：磨坊溫泉迴廊新文藝復興石柱" },
+                { type: "xmas", text: "🎄 耶誕推薦：溫泉長廊聖誕熱紅酒與木屋市集" }
+              ],
+              photoTip: "📸 拍照小技巧：在磨坊溫泉迴廊利用兩側對稱石柱拍出深邃延伸感；或是手持冒煙的溫泉杯在噴泉前拍特寫！",
+              parkingGas: "🅿️ 巴士停靠區：Tržnice Bus Parking｜⛽ 入城前 D6 高速公路 MOL 加油站",
+              mapQuery: "Mlynska+kolonada+Karlovy+Vary"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-music",
+              name: "瑪麗安斯凱 (Mariánské Lázně) 皇后溫泉小鎮",
+              stayTime: "建議停留 1.5 小時",
+              driveTime: "距卡洛維瓦利 56km (車程約 55分)",
+              desc: "蕭邦與歌德最愛的優雅溫泉小鎮，擁有全捷克最華麗的巴洛克鑄鐵雕花溫泉長廊與十字溫泉亭。",
+              tags: [
+                { type: "photo", text: "必拍：巴洛克鑄鐵雕花金色穹頂長廊" },
+                { type: "buy", text: "必買：Kolonáda 盒裝榛果巧克力溫泉餅" }
+              ],
+              photoTip: "📸 拍照小技巧：鑄鐵長廊內部抬頭仰拍金色線條與復古吊燈，人站在畫面中央低角度拍攝氣勢十足！",
+              parkingGas: "🅿️ 停車資訊：Parking City Service Mariánské Lázně｜⛽ 鄰近 Benzina 加油站",
+              mapQuery: "Hlavni+kolonada+Marianske+Lazne"
+            },
+            {
+              category: "酒店",
+              catIcon: "fa-bed",
+              name: "皮耳森地區飯店入住 & 晚餐",
+              stayTime: "住宿 1 晚",
+              driveTime: "距瑪麗安斯凱約 75km (車程約 1小時)",
+              desc: "享用當地特色料理後入住皮耳森星級飯店，好好調整時差準備明日精彩行程。",
+              tags: [
+                { type: "eat", text: "必吃：捷克風味烤肉與濃湯" }
+              ],
+              photoTip: "📸 拍照小技巧：拍攝捷克第一頓道地晚餐，用暖黃燈光模式能讓料理看起來更誘人。",
+              parkingGas: "🅿️ 飯店專屬大型巴士停車位｜⛽ 飯店周邊 OMV 加油站",
+              mapQuery: "Courtyard+by+Marriott+Pilsen"
+            }
+          ]
+        },
+        {
+          day: 3,
+          date: "12/24 (四) 平安夜",
+          location: "皮耳森 ➔ 赫魯波卡城堡 ➔ 庫倫洛夫",
+          routeDesc: "皮耳森(啤酒廠參觀) -130km- 赫魯波卡城堡 -34km- 庫倫洛夫",
+          meals: { b: "飯店自助式", l: "捷克特色料理", d: "中式六菜一湯" },
+          hotel: "Grand 或 Old Inn 或 Mlyn 或 Zlaty Andel 或同級 (古鎮內外)",
+          weather: { temp: "-4°C ~ 0°C", feel: "-8°C", snowProb: "65%", snowDepth: "4 cm", city: "庫倫洛夫 Český Krumlov" },
+          outfit: "保暖內層 + 高領毛衣 + 羽絨大衣 + 毛帽 + 防水防滑底雪靴（古鎮石板路必備！）",
+          snowNote: "庫倫洛夫山谷降雪機率極高！⚠️ 重要提醒：古鎮飯店多為古蹟改建並採鍋爐供水，洗澡請間隔 15-20 分鐘以免熱水不及加熱。",
+          spots: [
+            {
+              category: "活動",
+              catIcon: "fa-beer-mug-empty",
+              name: "皮耳森啤酒廠參觀 (Pilsner Urquell Brewery)",
+              stayTime: "建議停留 1.5 ~ 2 小時",
+              driveTime: "市區出發約 10 分鐘",
+              desc: "黃金皮爾森拉格啤酒的發源地！深入歷史悠久的地下冰涼酒窖，品嚐直接從橡木桶打出的未過濾新鮮生啤酒。（若遇預約滿則以百威或布拉格啤酒廠替代）",
+              tags: [
+                { type: "eat", text: "必喝：酒窖限定未過濾木桶生啤" },
+                { type: "buy", text: "必買：專屬刻字啤酒杯、啤酒花護手霜" },
+                { type: "photo", text: "必拍：歷史雙拱門地標與巨大銅製釀酒槽" }
+              ],
+              photoTip: "📸 拍照小技巧：在地下酒窖舉杯與橡木桶合影時，開啟手機「夜間模式」並請朋友用手機手電筒側向補光！",
+              parkingGas: "🅿️ 啤酒廠遊客中心專屬停車場 (U Prazdroje)｜⛽ 廠區外 MOL 加油站",
+              mapQuery: "Pilsner+Urquell+Brewery"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-chess-rook",
+              name: "赫魯波卡城堡 (Hluboká nad Vltavou) 白色溫莎城堡",
+              stayTime: "建議停留 1.5 小時",
+              driveTime: "距皮耳森 130km (車程約 1小時50分)",
+              desc: "仿造英國溫莎城堡改建的純白新哥德式城堡，被譽為捷克最美最浪漫的白色童話城堡，冬季雪景襯托下宛如冰雪奇緣。",
+              tags: [
+                { type: "photo", text: "必拍：純白城堡正面全景與鍛鐵玫瑰花園門" }
+              ],
+              photoTip: "📸 拍照小技巧：站在城堡右側溫室花園草坪斜角拍攝，可將整座白色塔樓與雪地完美收進畫面！",
+              parkingGas: "🅿️ 山下中央停車場 Parkoviště Podzámčí｜⛽ 城鎮入口 Benzina 站",
+              mapQuery: "Hluboka+Castle"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-crown",
+              name: "庫倫洛夫 (Český Krumlov) 世界遺產童話小鎮",
+              stayTime: "建議停留 半日 + 夜遊",
+              driveTime: "距赫魯波卡 34km (車程約 35分)",
+              desc: "伏爾塔瓦河 S 型曲流環抱的紅瓦小鎮！走訪彩繪塔、城堡區斗篷橋，平安夜在市政廳廣場感受濃厚的中世紀聖誕氣氛。",
+              tags: [
+                { type: "eat", text: "必吃：現烤肉桂捲 (Trdelník)、熱蜂蜜酒" },
+                { type: "buy", text: "必買：KOH-I-NOOR 刺蝟色鉛筆、菠丹妮手工皂" },
+                { type: "photo", text: "必拍：斗篷橋觀景台俯瞰 S 河灣與彩繪塔" },
+                { type: "xmas", text: "🎄 耶誕推薦：市政廳廣場平安夜聖誕樹與傳統木屋市集" }
+              ],
+              photoTip: "📸 拍照小技巧：城堡五號庭院旁「斗篷橋城牆圓孔」是最佳取景框！傍晚藍調時刻（約 16:15）拍彩繪塔點燈最夢幻！",
+              parkingGas: "🅿️ 巴士專用 P-Bus Chvalsinská（古鎮禁行大車）｜⛽ 城外 OMV 加油站",
+              mapQuery: "Cesky+Krumlov+Castle+Viewpoint"
+            }
+          ]
+        },
+        {
+          day: 4,
+          date: "12/25 (五) 聖誕節",
+          location: "庫倫洛夫 ➔ 特奇 Telč ➔ 布爾諾 Brno",
+          routeDesc: "庫倫洛夫 -112km- 特奇 Telč (世界遺產小鎮) -124km- 布爾諾周邊",
+          meals: { b: "飯店自助式", l: "特色豬腳料理", d: "當地料理" },
+          hotel: "Courtyard Brno 或 Best Western 或 Orea 或同級",
+          weather: { temp: "-3°C ~ 1°C", feel: "-6°C", snowProb: "50%", snowDepth: "3 cm", city: "特奇 / 布爾諾" },
+          outfit: "亮色系毛衣/圍巾（在粉彩小屋前拍照超顯色！）+ 防風大衣 + 暖暖包",
+          snowNote: "特奇廣場被兩座人工湖泊環繞，冬季湖面常結冰積雪，廣場較空曠請注意頭部與耳朵保暖。",
+          spots: [
+            {
+              category: "食物",
+              catIcon: "fa-utensils",
+              name: "捷克傳統脆皮烤豬腳風味午宴",
+              stayTime: "建議停留 1 小時",
+              driveTime: "小鎮餐廳步行可達",
+              desc: "大口品嚐外皮酥脆、肉質軟嫩的捷克烤豬腳，搭配酸菜、芥末醬與辣根，是冬季補充熱量的最棒饗宴！",
+              tags: [
+                { type: "eat", text: "必吃：脆皮烤豬腳配捷克黑啤酒" }
+              ],
+              photoTip: "📸 拍照小技巧：豬腳整支端上桌時先拍張浮誇比例對比照，再請大家一起幫忙切分！",
+              parkingGas: "🅿️ 小鎮外圍停車場｜⛽ 沿途休息站",
+              mapQuery: "Cesky+Krumlov"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-house-chimney-window",
+              name: "特奇 (Telč) 馬卡龍彩色世界遺產小鎮",
+              stayTime: "建議停留 1.5 ~ 2 小時",
+              driveTime: "距庫倫洛夫 112km (車程約 1小時45分)",
+              desc: "1992 年列入聯合國世界文化遺產！薩哈利亞修廣場四周環繞著粉紅、鵝黃、薄荷綠的文藝復興與巴洛克式山形牆拱廊老屋。",
+              tags: [
+                { type: "photo", text: "必拍：一整排馬卡龍色山形牆房子與湖畔倒影" },
+                { type: "buy", text: "必買：手工繪製特奇小房子陶瓷磁鐵" }
+              ],
+              photoTip: "📸 拍照小技巧：蹲低身體利用廣場石板地或噴泉水面倒影，拍出整排粉彩童話屋的對稱美感！",
+              parkingGas: "🅿️ 巴士停靠站 Parkoviště autobusů Na Sádkách｜⛽ EuroOil 加油站",
+              mapQuery: "namesti+Zachariase+z+Hradce+Telc"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-ferris-wheel",
+              name: "布爾諾 (Brno) 摩拉維亞首府 & 聖誕夜景",
+              stayTime: "住宿 1 晚",
+              driveTime: "距特奇 124km (車程約 1小時40分)",
+              desc: "捷克第二大城，冬季廣場設有浪漫的白色聖誕摩天輪與溫馨燈飾，充滿摩拉維亞的悠閒節慶氣息。",
+              tags: [
+                { type: "xmas", text: "🎄 耶誕推薦：自由廣場與摩拉維亞廣場聖誕摩天輪" },
+                { type: "eat", text: "必喝：布爾諾冬季限定熱果酒 (Turbomošt)" }
+              ],
+              photoTip: "📸 拍照小技巧：以白色聖誕摩天輪為背景，開啟人像模式讓背後燈串變成夢幻散景光斑！",
+              parkingGas: "🅿️ 飯店專屬停車場｜⛽ 布爾諾市郊 Shell 加油站",
+              mapQuery: "Namesti+Svobody+Brno"
+            }
+          ]
+        },
+        {
+          day: 5,
+          date: "12/26 (六)",
+          location: "布爾諾 ➔ 歐洛慕奇 Olomouc ➔ 布爾諾",
+          routeDesc: "布爾諾 -79km- 歐洛慕奇 (宗教柱巡禮) -79km- 布爾諾",
+          meals: { b: "飯店自助式", l: "當地特色料理", d: "中式六菜一湯" },
+          hotel: "Courtyard Brno 或 Best Western 或 Orea 或同級 (連泊免收行李)",
+          weather: { temp: "-4°C ~ 0°C", feel: "-8°C", snowProb: "60%", snowDepth: "5 cm", city: "歐洛慕奇 Olomouc" },
+          outfit: "保暖防寒三層穿搭 + 保溫瓶裝熱水 + 毛線帽 + 手套",
+          snowNote: "歐洛慕奇位於摩拉維亞偏北側，氣溫比布拉格更低一些，雪中欣賞世界遺產黑死病紀念柱非常有氣氛！",
+          spots: [
+            {
+              category: "景點",
+              catIcon: "fa-monument",
+              name: "歐洛慕奇 (Olomouc) 聖三位一體柱 & 天文鐘",
+              stayTime: "建議停留 2.5 ~ 3 小時",
+              driveTime: "距布爾諾 79km (車程約 1小時)",
+              desc: "《孤獨星球》評選為歐洲隱藏版寶石城市！擁有高達 35 公尺的世界遺產「聖三位一體巴洛克紀念柱」，以及全球罕見的「社會主義寫實風格天文鐘」。",
+              tags: [
+                { type: "photo", text: "必拍：高達35公尺鍍金聖三位一體柱、勞工版天文鐘" },
+                { type: "eat", text: "必吃：Punch 聖誕水果香料熱紅酒 (Punč)" },
+                { type: "xmas", text: "🎄 耶誕推薦：全捷克最知名的「歐洛慕奇熱紅酒聖誕市集」" }
+              ],
+              photoTip: "📸 拍照小技巧：聖三位一體柱非常高大，請切換手機「0.5x 超廣角鏡頭」由下往上拍，才能把頂端鍍金雕像與人物一起拍進去！",
+              parkingGas: "🅿️ 巴士停靠區：Parking Uhelná｜⛽ D46 高速公路沿線 MOL 加油站",
+              mapQuery: "Holy+Trinity+Column+Olomouc"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-church",
+              name: "聖瓦茨拉夫主教座堂 & 布爾諾自由廣場巡禮",
+              stayTime: "建議停留 2 小時",
+              driveTime: "返回布爾諾 79km (車程約 1小時)",
+              desc: "參觀摩拉維亞最高的哥德式雙塔教堂，隨後返回布爾諾市中心感受包浩斯與歷史建築交織的城市魅力，今晚連住同一飯店免整理行李。",
+              tags: [
+                { type: "photo", text: "必拍：哥德式高聳三尖塔教堂外觀" },
+                { type: "buy", text: "必買：Manufaktura 曼菲蘿啤酒花洗髮精" }
+              ],
+              photoTip: "📸 拍照小技巧：站在教堂前小廣場階梯下方，利用石階引導視線拍出教堂高聳入雲的壯麗感。",
+              parkingGas: "🅿️ 飯店停車場｜⛽ 市區 OMV 加油站",
+              mapQuery: "Saint+Wenceslas+Cathedral+Olomouc"
+            }
+          ]
+        },
+        {
+          day: 6,
+          date: "12/27 (日)",
+          location: "布爾諾 ➔ Outlet 購物 ➔ 布拉格老城區",
+          routeDesc: "布爾諾 -206km- Outlet購物 - 布拉格(火藥塔-市民會館-老城廣場)",
+          meals: { b: "飯店自助式", l: "自理 (方便逛街)", d: "市民會館肋排料理" },
+          hotel: "NH Prague 或 Royal Prague 或 Vienna House 或同級 (布拉格連住第1晚)",
+          weather: { temp: "-2°C ~ 2°C", feel: "-5°C", snowProb: "35%", snowDepth: "1 cm", city: "布拉格 Prague" },
+          outfit: "洋蔥式穿法（Outlet 與百貨室內暖氣強，好穿脫的外套最方便！）",
+          snowNote: "今日拉車返回首都布拉格並連住三晚！老城廣場聖誕市集會一直營業到一月初，夜晚燈火輝煌。",
+          spots: [
+            {
+              category: "購物",
+              catIcon: "fa-bag-shopping",
+              name: "布拉格時尚購物村 (Fashion Arena / Freeport Outlet)",
+              stayTime: "建議停留 2 ~ 2.5 小時",
+              driveTime: "距布爾諾約 195km (車程約 2小時10分)",
+              desc: "年末聖誕折扣季開跑！匯集歐洲各大精品、運動休閒品牌與捷克水晶，先到服務中心領取額外 9 折 VIP 券更好買，午餐於園區自由享用。",
+              tags: [
+                { type: "buy", text: "必買：Bata 皮鞋、歐系戶外防寒服飾、德國雙人牌鍋具" },
+                { type: "eat", text: "必吃：園區咖啡館捷克傳統蜂蜜蛋糕 (Medovník)" }
+              ],
+              photoTip: "📸 拍照小技巧：在戶外購物街歐風造景與聖誕裝飾前，手提戰利品購物袋拍張時尚街拍照！",
+              parkingGas: "🅿️ Outlet 專屬免費大型停車場｜⛽ D1 高速公路 Průhonice 加油站",
+              mapQuery: "Fashion+Arena+Prague+Outlet"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-clock",
+              name: "布拉格老城廣場 & 天文鐘 & 火藥塔",
+              stayTime: "建議停留 2.5 小時",
+              driveTime: "距 Outlet 約 20 分鐘車程",
+              desc: "走訪哥德式黑塔「火藥塔」，沿著皇家之路來到老城廣場！欣賞整點報時的百年「天文鐘」、魔幻雙塔「泰恩教堂」，並逛遍全歐洲最美聖誕市集！",
+              tags: [
+                { type: "xmas", text: "🎄 耶誕推薦：老城廣場 25 公尺巨型聖誕樹點燈音樂秀" },
+                { type: "eat", text: "必吃：市集現烤大塊捷克火腿 (Pražská šunka)、熱紅酒" },
+                { type: "buy", text: "必買：老城廣場小巷菠丹妮 (Botanicus) 總店玫瑰系列" },
+                { type: "photo", text: "必拍：泰恩教堂雙塔與璀璨聖誕樹同框" }
+              ],
+              photoTip: "📸 拍照小技巧：老城廣場巨型聖誕樹每小時整點半點會有燈光音樂秀，站在聖尼古拉教堂前斜坡可拍到「聖誕樹＋泰恩教堂」同框全景！",
+              parkingGas: "🅿️ 巴士上下客區：Wilsonova / 契赫橋畔｜⛽ 市郊 MOL 加油站",
+              mapQuery: "Old+Town+Square+Prague"
+            },
+            {
+              category: "食物",
+              catIcon: "fa-drumstick-bite",
+              name: "布拉格市民會館 (Obecní dům) 烤豬肋排晚宴",
+              stayTime: "建議停留 1.5 小時",
+              driveTime: "位於火藥塔旁步行 1 分鐘",
+              desc: "在布拉格最華麗的新藝術風格（Art Nouveau）宮殿建築「市民會館」內，享用香氣四溢的特色烤肋排料理。",
+              tags: [
+                { type: "eat", text: "必吃：秘製醬烤豬肋排套餐" },
+                { type: "photo", text: "必拍：慕夏風格馬賽克半圓拱頂與新藝術水晶燈" }
+              ],
+              photoTip: "📸 拍照小技巧：進門大廳的旋轉樓梯與彩繪玻璃窗充滿慕夏美學，用餐前後千萬別忘了去拍張宮廷風美照！",
+              parkingGas: "🅿️ 鄰近 Palladium 百貨地下停車場｜⛽ 市中心周邊",
+              mapQuery: "Municipal+House+Prague"
+            }
+          ]
+        },
+        {
+          day: 7,
+          date: "12/28 (一)",
+          location: "布拉格深度巡禮 (城堡區・遊船・查理大橋・猶太區)",
+          routeDesc: "布拉格城堡區入內導覽 ➔ 伏爾塔瓦河遊船百匯 ➔ 查理大橋 ➔ 猶太區",
+          meals: { b: "飯店自助式", l: "伏爾塔瓦遊船百匯", d: "中式六菜一湯" },
+          hotel: "NH Prague 或 Royal Prague 或 Vienna House 或同級 (布拉格連住第2晚)",
+          weather: { temp: "-2°C ~ 1°C", feel: "-6°C", snowProb: "40%", snowDepth: "2 cm", city: "布拉格城堡區 / 河畔" },
+          outfit: "防風保暖大衣 + 耳罩/毛帽 + 圍巾（查理大橋與城堡山丘上風勢較大）",
+          snowNote: "城堡區居高臨下可俯瞰整片覆雪的百塔之城紅屋頂；遊船船艙內有溫暖空調，上甲板拍照時請披好外套。",
+          spots: [
+            {
+              category: "景點",
+              catIcon: "fa-fort-awesome",
+              name: "布拉格城堡區入內導覽 (聖維特大教堂・舊皇宮・黃金巷)",
+              stayTime: "建議停留 3 小時",
+              driveTime: "飯店出發約 20 分鐘",
+              desc: "金氏世界紀錄最大的古城堡群！入內參觀歷代國王加冕的「聖維特大教堂」欣賞慕夏彩繪玻璃窗、舊皇宮，以及卡夫卡曾居住過的 22 號藍色小屋「黃金巷」。",
+              tags: [
+                { type: "photo", text: "必拍：聖維特大教堂慕夏之窗、黃金巷22號、城堡星巴克觀景台" },
+                { type: "xmas", text: "🎄 耶誕推薦：聖喬治廣場城堡聖誕市集" },
+                { type: "buy", text: "必買：黃金巷手工書籤與錫製小士兵" }
+              ],
+              photoTip: "📸 拍照小技巧：走出城堡大門右側的「星巴克露台女兒牆」是拍布拉格紅屋頂海的無敵機位；教堂內拍彩繪玻璃請調低曝光值(EV)讓色彩更飽和！",
+              parkingGas: "🅿️ 城堡區巴士停靠站 Pražský hrad (Prašný most)｜⛽ 歐洲大道加油站",
+              mapQuery: "St.+Vitus+Cathedral+Prague"
+            },
+            {
+              category: "食物",
+              catIcon: "fa-ship",
+              name: "伏爾塔瓦河 (Vltava) 景觀遊船自助百匯",
+              stayTime: "建議停留 1.5 ~ 2 小時",
+              driveTime: "下山前往契赫橋碼頭約 15 分鐘",
+              desc: "搭乘玻璃景觀遊船緩緩航行於伏爾塔瓦河上，一邊享用豐盛的中西式自助百匯午宴，一邊從水面視角飽覽查理大橋與布拉格城堡。",
+              tags: [
+                { type: "eat", text: "必吃：遊船現切熱食百匯與捷克甜點" },
+                { type: "photo", text: "必拍：甲板上與遠方布拉格城堡及河鷗合照" }
+              ],
+              photoTip: "📸 拍照小技巧：船隻準備穿過查理大橋橋拱前 1 分鐘走上船頭甲板，能拍出獨一無二的河面仰望古橋視角！",
+              parkingGas: "🅿️ 契赫橋碼頭巴士專用車位 (Dvořákovo nábřeží)｜⛽ 河岸北側加油站",
+              mapQuery: "Cechuv+most+Prague+Boat"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-bridge-water",
+              name: "查理大橋 (Karlův most) & 猶太區・巴黎精品街",
+              stayTime: "建議停留 2.5 小時",
+              driveTime: "全程徒步漫遊",
+              desc: "漫步於擁有 30 座巴洛克雕像的 600 年哥德式石橋「查理大橋」，親手觸摸聖約翰內波穆克浮雕祈求好運；接續走訪歷史悠久的猶太區與精品雲集的巴黎大道。",
+              tags: [
+                { type: "photo", text: "必拍：查理大橋老城橋塔、摸聖約翰銅像許願" },
+                { type: "buy", text: "必買：查理大橋街頭畫家手繪水彩畫、巴黎街精品" }
+              ],
+              photoTip: "📸 拍照小技巧：查理大橋每天約 16:00 會有穿著古裝的「點燈人 (Lamplighter)」拿長竿親手點燃煤氣燈，遇到他一定要合照！（就像小樽北一硝子煤油燈一樣超有復古浪漫感！）",
+              parkingGas: "🅿️ 魯道夫音樂廳地下停車場｜⛽ 市區周邊",
+              mapQuery: "Charles+Bridge+Prague"
+            }
+          ]
+        },
+        {
+          day: 8,
+          date: "12/29 (二)",
+          location: "布拉格全日自由活動 (贈送一日交通券)",
+          routeDesc: "布拉格全日自由探索（可使用一日券暢遊十大咖啡館、博物館或參加自費德勒斯登之旅）",
+          meals: { b: "飯店自助式", l: "自理 (探索米其林或百年咖啡館)", d: "自理 (自由品嚐捷克美食)" },
+          hotel: "NH Prague 或 Royal Prague 或 Vienna House 或同級 (布拉格連住第3晚)",
+          weather: { temp: "-1°C ~ 3°C", feel: "-4°C", snowProb: "30%", snowDepth: "1 cm", city: "布拉格市區" },
+          outfit: "時尚大衣穿搭 + 舒適好走的防滑靴 + 隨身斜背防盜小包",
+          snowNote: "特別贈送「布拉格一日交通券」🎫！提醒：第一次搭乘地鐵或路面電車時，務必在黃色打卡機打上日期時間戳記喔！",
+          spots: [
+            {
+              category: "食物",
+              catIcon: "fa-mug-hot",
+              name: "【推薦路線 A】世界十大最美：帝國咖啡館 (Café Imperial) 或羅浮咖啡館",
+              stayTime: "建議停留 1.5 小時",
+              driveTime: "搭乘路面電車/地鐵至 Náměstí Republiky 站",
+              desc: "持一日交通券前往百年歷史的「帝國咖啡館」或愛因斯坦常去的「羅浮咖啡館 (Café Louvre)」，在馬賽克瓷磚與挑高宮廷大廳裡喝杯熱可可與油封鴨腿。",
+              tags: [
+                { type: "eat", text: "必吃：帝國咖啡館油封鴨腿、羅浮咖啡館超濃熱巧克力" },
+                { type: "photo", text: "必拍：滿牆華麗立體陶瓷浮雕壁磚" }
+              ],
+              photoTip: "📸 拍照小技巧：坐在靠窗沙發座，用桌上咖啡杯當前景，帶出背後整面新藝術陶瓷立柱的奢華感！",
+              parkingGas: "🚇 交通：地鐵 B 線 Náměstí Republiky 站步行 3 分鐘",
+              mapQuery: "Cafe+Imperial+Prague"
+            },
+            {
+              category: "購物",
+              catIcon: "fa-wand-magic-sparkles",
+              name: "【推薦路線 B】哈維爾市集 & 瓦茨拉夫廣場 & 慕夏博物館",
+              stayTime: "建議停留 3 小時",
+              driveTime: "老城區步行或搭地鐵至 Můstek 站",
+              desc: "逛逛創立於 1232 年的「哈維爾傳統市集」採買伴手禮，接著前往瓦茨拉夫廣場聖誕市集、慕夏博物館或卡夫卡旋轉頭像。",
+              tags: [
+                { type: "buy", text: "必買：哈維爾市集天文鐘木鐘、巫婆玩偶、水晶指甲銼刀" },
+                { type: "buy", text: "必買：DM 藥妝店發泡錠、Balea 安瓶、小雛菊護手霜" },
+                { type: "xmas", text: "🎄 耶誕推薦：瓦茨拉夫廣場長廊聖誕市集" }
+              ],
+              photoTip: "📸 拍照小技巧：去 Quadrio 商場後方拍「卡夫卡巨型鏡面旋轉頭像」，等頭像轉到對齊瞬間按下快門！",
+              parkingGas: "🚇 交通：地鐵 A/B 線交會站 Můstek 出站即達",
+              mapQuery: "Havelske+trziste+Prague"
+            },
+            {
+              category: "景點",
+              catIcon: "fa-landmark",
+              name: "【推薦選項 C】自費行程：德國薩克森首府—德勒斯登一日遊",
+              stayTime: "全日行程 (需出發前一個月報名)",
+              driveTime: "布拉格往返德勒斯登各約 2 小時",
+              desc: "若已報名自費行程，將由領隊帶領前往易北河上的佛羅倫斯「德國德勒斯登」，參觀茲溫格宮、聖母教堂、王侯馬列圖與德國冬季市集。",
+              tags: [
+                { type: "photo", text: "必拍：102公尺マイセン瓷磚壁畫《王侯馬列圖》" },
+                { type: "eat", text: "必吃：德國烤香腸夾麵包、德勒斯登聖誕果乾麵包(Stollen)" }
+              ],
+              photoTip: "📸 拍照小技巧：在布呂爾露台（歐洲的陽台）眺望易北河與巴洛克建築天際線。",
+              parkingGas: "🅿️ 德勒斯登劇院廣場巴士區｜⛽ A17 德捷邊境休息站",
+              mapQuery: "Frauenkirche+Dresden"
+            }
+          ]
+        },
+        {
+          day: 9,
+          date: "12/30 (三)",
+          location: "布拉格機場 PRG ✈️ 台北桃園",
+          routeDesc: "飯店早餐 ➔ 布拉格瓦茨拉夫・哈維爾國際機場 (10:40 CI068 起飛)",
+          meals: { b: "飯店自助式 (或餐盒)", l: "機上精緻套餐", d: "機上精緻套餐" },
+          hotel: "夜宿中華航空豪華客機 CI068",
+          weather: { temp: "-2°C ~ 1°C", feel: "-5°C", snowProb: "25%", snowDepth: "0 cm", city: "布拉格機場 PRG" },
+          outfit: "輕便舒適的機上穿搭（把厚重羽絨衣收進托運行李或上機後掛起）",
+          snowNote: "上午 07:30 左右前往機場辦理退稅與登機，請確保所有退稅商品與退稅單放在方便海關查驗的位置！",
+          spots: [
+            {
+              category: "交通",
+              catIcon: "fa-plane-up",
+              name: "布拉格國際機場 (PRG) 辦理退稅 & 搭機返台",
+              stayTime: "建議提早 3 小時抵達機場",
+              driveTime: "10:40 搭乘華航 CI068 起飛 (飛行 11h40m)",
+              desc: "專車前往布拉格機場第一航廈，先完成海關退稅蓋章與退稅領現/退信用卡，再逛逛機場免稅店把剩下的克朗硬幣花光光！",
+              tags: [
+                { type: "buy", text: "必買：機場最後補貨莫札特巧克力、捷克溫泉餅、檸檬酒" },
+                { type: "photo", text: "必拍：布拉格機場大廳與滿滿戰利品道別照" }
+              ],
+              photoTip: "📸 拍照小技巧：起飛後從機窗俯瞰波西米亞平原的白雪大地，為捷克之旅留下最後一張雪景照！",
+              parkingGas: "🅿️ Prague Airport Terminal 1 Express Parking｜⛽ 機場旁 Shell 站",
+              mapQuery: "Vaclav+Havel+Airport+Prague"
+            }
+          ]
+        },
+        {
+          day: 10,
+          date: "12/31 (四) 跨年日",
+          location: "平安抵達台北桃園機場 TPE",
+          routeDesc: "清晨 05:20 抵達桃園國際機場 ➔ 溫暖的家",
+          meals: { b: "機上早餐", l: "溫暖的家", d: "溫暖的家" },
+          hotel: "溫暖的家 🏠",
+          weather: { temp: "15°C ~ 20°C", feel: "16°C", snowProb: "0%", snowDepth: "0 cm", city: "台北桃園 TPE" },
+          outfit: "台灣冬季薄長袖或輕薄外套（從零下回到台灣溫差約 18°C，下機可先脫掉毛衣）",
+          snowNote: "清晨 05:20 順利返抵國門，帶著滿滿的捷克聖誕回憶與伴手禮回家準備跨年囉！",
+          spots: [
+            {
+              category: "交通",
+              catIcon: "fa-house-chimney-user",
+              name: "抵達桃園國際機場 (05:20)・滿載而歸",
+              stayTime: "出關領取行李約 45 分鐘",
+              driveTime: "平安返家",
+              desc: "班機於 12/31 清晨 05:20 抵達桃園國際機場，結束浪漫難忘的 10 天捷克冬季聖誕童話之旅！",
+              tags: [
+                { type: "photo", text: "必拍：回家鋪滿整床的捷克戰利品大合照" }
+              ],
+              photoTip: "📸 拍照小技巧：回家將溫泉杯、刺蝟筆、菠丹妮、水晶銼刀排列整齊，由正上方俯拍一張「戰利品開箱圖」分享到旅記！",
+              parkingGas: "🅿️ 桃園機場航廈接送區｜⛽ 國道沿線服務區",
+              mapQuery: "Taoyuan+International+Airport"
+            }
+          ]
+        }
+      ];
+
+      // 2. 行李與購物清單預設資料
+      const defaultBagData = {
+        backpack: [
+          { id: 101, name: "護照正本 + 影本2份", qty: 1, checked: true },
+          { id: 102, name: "歐元現金 & 捷克克朗零錢", qty: 1, checked: true },
+          { id: 103, name: "海外高回饋感應信用卡(含PIN碼)", qty: 2, checked: true },
+          { id: 104, name: "歐洲網卡 eSIM / 漫遊開通", qty: 1, checked: false },
+          { id: 105, name: "輕便保溫瓶 (裝熱紅酒/熱水)", qty: 1, checked: false },
+          { id: 106, name: "護唇膏 & 隨身小護手霜", qty: 1, checked: false }
+        ],
+        carryon: [
+          { id: 201, name: "行動電源 (嚴禁托運！)", qty: 2, checked: true },
+          { id: 202, name: "機上頸枕 + 蒸氣眼罩 + 耳塞", qty: 1, checked: false },
+          { id: 203, name: "下機即穿防風羽絨大衣", qty: 1, checked: false },
+          { id: 204, name: "個人常備藥 / 感冒腸胃藥", qty: 1, checked: false },
+          { id: 205, name: "牙刷牙膏組 (歐洲飯店不提供)", qty: 1, checked: false }
+        ],
+        checked: [
+          { id: 301, name: "極暖發熱衣 / 發熱內搭褲", qty: 5, checked: false },
+          { id: 302, name: "防水防滑底雪靴 / 厚羊毛襪", qty: 1, checked: false },
+          { id: 303, name: "毛帽 + 圍巾 + 可觸控保暖手套", qty: 2, checked: false },
+          { id: 304, name: "貼式/手握式暖暖包", qty: 20, checked: false },
+          { id: 305, name: "歐規雙圓孔轉接頭 (C/E型)", qty: 2, checked: false },
+          { id: 306, name: "歐洲雙電壓旅行快煮壺 (泡麵神器)", qty: 1, checked: false }
+        ],
+        shopping: [
+          { id: 401, name: "菠丹妮 Botanicus 死海泥皂/玫瑰油", qty: 3, checked: false },
+          { id: 402, name: "卡洛維瓦利 陶瓷溫泉杯 & 溫泉餅", qty: 2, checked: false },
+          { id: 403, name: "KOH-I-NOOR 彩色刺蝟色鉛筆", qty: 1, checked: false },
+          { id: 404, name: "曼菲蘿 Manufaktura 啤酒花洗髮精", qty: 2, checked: false },
+          { id: 405, name: "捷克波西米亞水晶玻璃指甲銼刀", qty: 5, checked: false },
+          { id: 406, name: "DM 藥妝發泡錠 & Balea 保濕安瓶", qty: 4, checked: false }
+        ]
+      };
+
+      let currentDay = 1;
+      let currentBagCat = 'backpack';
+      let bagData = JSON.parse(localStorage.getItem('czech_bag_data')) || defaultBagData;
+      let uploadedPhotos = JSON.parse(localStorage.getItem('czech_trip_photos')) || {};
+
+      // 初始化渲染
+      window.addEventListener('DOMContentLoaded', () => {
+        renderDaySelector();
+        renderDayItinerary(currentDay);
+        renderBagList();
+        renderWeatherPage();
+      });
+
+      // ==================== 主分頁切換 ====================
+      function switchMainTab(tabName) {
+        const tabs = ['itinerary', 'guide', 'weather'];
+        tabs.forEach(t => {
+          document.getElementById(`tab-${t}`).classList.add('hidden');
+          const btn = document.getElementById(`nav-${t}`);
+          btn.className = "flex-1 py-2.5 rounded-full flex items-center justify-center gap-2 text-xs font-bold text-warmgray hover:text-warmgray-dark transition-all";
+        });
+
+        document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+        const activeBtn = document.getElementById(`nav-${tabName}`);
+        activeBtn.className = "flex-1 py-2.5 rounded-full flex items-center justify-center gap-2 text-xs font-bold bg-milktea-dark text-snow shadow-sm transition-all";
+
+        // 只有在行程頁顯示上方日期快速切換列
+        const dayBar = document.getElementById('day-selector-bar');
+        if (tabName === 'itinerary') {
+          dayBar.classList.remove('hidden');
+        } else {
+          dayBar.classList.add('hidden');
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // ==================== 行程頁渲染邏輯 ====================
+      function renderDaySelector() {
+        const bar = document.getElementById('day-selector-bar');
+        bar.innerHTML = tripData.map(d => {
+          const isActive = d.day === currentDay;
+          return `
+            <button onclick="selectDay(${d.day})" class="shrink-0 px-3.5 py-1.5 rounded-2xl text-xs font-bold transition-all ${
+              isActive
+                ? 'bg-milktea-dark text-snow shadow-sm scale-105'
+                : 'bg-milktea-light text-warmgray hover:bg-milktea'
+            }">
+              <div class="text-[10px] opacity-80">DAY ${d.day}</div>
+              <div>${d.date.split(' ')[0]}</div>
+            </button>
+          `;
+        }).join('');
+      }
+
+      function selectDay(dayNum) {
+        currentDay = dayNum;
+        renderDaySelector();
+        renderDayItinerary(dayNum);
+      }
+
+      function renderDayItinerary(dayNum) {
+        const data = tripData.find(d => d.day === dayNum);
+        const container = document.getElementById('itinerary-content');
+
+        const spotsHtml = data.spots.map((spot, idx) => {
+          const spotKey = `d${dayNum}_s${idx}`;
+          const savedPhoto = uploadedPhotos[spotKey];
+
+          const tagsHtml = spot.tags.map(t => {
+            let cls = 'tag-photo';
+            if (t.type === 'eat') cls = 'tag-eat';
+            if (t.type === 'buy') cls = 'tag-buy';
+            if (t.type === 'xmas') cls = 'tag-xmas';
+            return `<span class="${cls} text-[11px] font-bold px-2.5 py-1 rounded-xl inline-block">${t.text}</span>`;
+          }).join('');
+
+          return `
+            <div class="bg-snow rounded-3xl p-4 jp-shadow border border-milktea space-y-3 fade-in">
+              <!-- 景點分類與停留/交通時間 -->
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="bg-milktea text-milktea-deep text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
+                  <i class="fa-solid ${spot.catIcon}"></i> ${spot.category}
+                </span>
+                <div class="flex items-center gap-1.5 text-[11px] text-warmgray font-bold">
+                  <span class="bg-milktea-light px-2.5 py-1 rounded-lg"><i class="fa-regular fa-clock mr-1 text-milktea-dark"></i>${spot.stayTime}</span>
+                </div>
+              </div>
+
+              <!-- 景點名稱與車程提示 -->
+              <div>
+                <h3 class="text-base font-black text-warmgray-dark leading-snug">${spot.name}</h3>
+                <p class="text-[11px] text-milktea-dark font-bold mt-0.5">
+                  <i class="fa-solid fa-van-shuttle mr-1"></i>${spot.driveTime}
+                </p>
+                <p class="text-xs text-warmgray-dark leading-relaxed mt-2">${spot.desc}</p>
+              </div>
+
+              <!-- 必吃 / 必買 / 必拍 / 耶誕彩色標籤 -->
+              <div class="flex flex-wrap gap-1.5">
+                ${tagsHtml}
+              </div>
+
+              <!-- 拍照小技巧 -->
+              <div class="bg-milktea-light/80 border border-milktea rounded-2xl p-3 text-xs text-milktea-deep leading-relaxed">
+                ${spot.photoTip}
+              </div>
+
+              <!-- 自動顯示停車 & 加油資訊 -->
+              <div class="bg-warmgray-light/60 rounded-2xl px-3 py-2 text-[11px] text-warmgray-dark flex items-center gap-2">
+                <i class="fa-solid fa-square-parking text-milktea-dark text-sm"></i>
+                <span>${spot.parkingGas}</span>
+              </div>
+
+              <!-- 底部操作列：Google Maps 導航按鈕 + 旅記照片上傳 -->
+              <div class="pt-1 flex items-center gap-2">
+                <a href="https://www.google.com/maps/search/?api=1&query=${spot.mapQuery}" target="_blank" class="flex-1 bg-milktea-dark text-snow text-xs font-bold py-2.5 px-3 rounded-2xl flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
+                  <i class="fa-solid fa-location-arrow"></i> Google Maps 導航
+                </a>
+                <label class="cursor-pointer bg-milktea-light hover:bg-milktea text-milktea-deep border border-milktea text-xs font-bold py-2.5 px-3.5 rounded-2xl flex items-center justify-center gap-1.5 active:scale-95 transition">
+                  <i class="fa-solid fa-camera"></i> 旅記拍照
+                  <input type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, '${spotKey}')">
+                </label>
+              </div>
+
+              <!-- 旅記已上傳照片預覽區 -->
+              <div id="photo-box-${spotKey}" class="${savedPhoto ? 'block' : 'hidden'} pt-2">
+                <div class="relative rounded-2xl overflow-hidden border-2 border-milktea bg-milktea-light">
+                  <img id="photo-img-${spotKey}" src="${savedPhoto || ''}" class="w-full h-44 object-cover" alt="旅記照片">
+                  <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-2.5 flex items-center justify-between text-white text-xs">
+                    <span>✨ 我的捷克旅記回憶</span>
+                    <button onclick="removePhoto('${spotKey}')" class="bg-red-500/80 px-2 py-0.5 rounded-lg text-[10px]">刪除</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        container.innerHTML = `
+          <!-- 每日頂部總覽卡片 -->
+          <div class="bg-gradient-to-br from-milktea-dark to-milktea-deep text-snow rounded-3xl p-4 jp-shadow fade-in">
+            <div class="flex items-center justify-between mb-1">
+              <span class="bg-snow/20 text-snow text-xs font-black px-3 py-0.5 rounded-full">DAY ${data.day} ・ ${data.date}</span>
+              <span class="text-xs font-bold text-milktea-light"><i class="fa-solid fa-snowflake mr-1"></i>${data.weather.temp}</span>
+            </div>
+            <h2 class="text-lg font-black mt-1">${data.location}</h2>
+            <p class="text-xs text-milktea-light mt-1 opacity-90">${data.routeDesc}</p>
+
+            <!-- 餐食與住宿摘要 -->
+            <div class="mt-3 pt-3 border-t border-snow/20 grid grid-cols-3 gap-2 text-[11px]">
+              <div class="bg-black/15 rounded-xl p-2">
+                <span class="text-milktea block text-[10px]">🌅 早餐</span>
+                <span class="font-bold">${data.meals.b}</span>
+              </div>
+              <div class="bg-black/15 rounded-xl p-2">
+                <span class="text-milktea block text-[10px]">☀️ 午餐</span>
+                <span class="font-bold">${data.meals.l}</span>
+              </div>
+              <div class="bg-black/15 rounded-xl p-2">
+                <span class="text-milktea block text-[10px]">🌙 晚餐</span>
+                <span class="font-bold">${data.meals.d}</span>
+              </div>
+            </div>
+            <div class="mt-2 bg-black/15 rounded-xl px-3 py-2 text-xs flex items-center gap-2">
+              <i class="fa-solid fa-hotel text-milktea"></i>
+              <span class="truncate">住宿：${data.hotel}</span>
+            </div>
+          </div>
+
+          <!-- 景點卡片列表 -->
+          <div class="space-y-4">
+            ${spotsHtml}
+          </div>
+
+          <!-- 每日底部：建議穿著 + 雪況提示 -->
+          <div class="bg-snow rounded-3xl p-4 jp-shadow border-2 border-milktea space-y-2.5 fade-in">
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-black text-milktea-deep flex items-center gap-1.5">
+                <i class="fa-solid fa-mitten"></i> 當日建議穿著 & 雪況提示
+              </h4>
+              <span class="text-xs font-bold bg-sky-100 text-sky-800 px-2.5 py-0.5 rounded-full">
+                降雪率 ${data.weather.snowProb}｜雪深 ${data.weather.snowDepth}
+              </span>
+            </div>
+            <div class="bg-milktea-light p-3 rounded-2xl text-xs space-y-1.5">
+              <p class="text-warmgray-dark"><strong class="text-milktea-deep">🧥 穿搭建議：</strong>${data.outfit}</p>
+              <p class="text-warmgray-dark"><strong class="text-milktea-deep">❄️ 雪況與叮嚀：</strong>${data.snowNote}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // ==================== 旅記照片上傳處理 ====================
+      function handlePhotoUpload(event, spotKey) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          uploadedPhotos[spotKey] = e.target.result;
+          try {
+            localStorage.setItem('czech_trip_photos', JSON.stringify(uploadedPhotos));
+          } catch (err) {
+            console.warn('照片較大，僅暫存於當次瀏覽階段');
+          }
+          const box = document.getElementById(`photo-box-${spotKey}`);
+          const img = document.getElementById(`photo-img-${spotKey}`);
+          if (box && img) {
+            img.src = e.target.result;
+            box.classList.remove('hidden');
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function removePhoto(spotKey) {
+        delete uploadedPhotos[spotKey];
+        localStorage.setItem('czech_trip_photos', JSON.stringify(uploadedPhotos));
+        const box = document.getElementById(`photo-box-${spotKey}`);
+        if (box) box.classList.add('hidden');
+      }
+
+      // ==================== 指南頁：行李與購物清單互動 ====================
+      function switchBagCategory(cat) {
+        currentBagCat = cat;
+        const cats = ['backpack', 'carryon', 'checked', 'shopping'];
+        cats.forEach(c => {
+          const btn = document.getElementById(`bag-btn-${c}`);
+          if (c === cat) {
+            btn.className = "py-2 rounded-xl bg-snow text-milktea-deep shadow-sm transition font-bold";
+          } else {
+            btn.className = "py-2 rounded-xl text-warmgray transition font-bold";
+          }
+        });
+        renderBagList();
+      }
+
+      function renderBagList() {
+        const list = bagData[currentBagCat] || [];
+        const container = document.getElementById('bag-list-container');
+
+        // 計算總進度
+        const allItems = [...bagData.backpack, ...bagData.carryon, ...bagData.checked, ...bagData.shopping];
+        const doneItems = allItems.filter(i => i.checked).length;
+        const pct = allItems.length ? Math.round((doneItems / allItems.length) * 100) : 0;
+        document.getElementById('packing-progress').innerText = `${pct}% 已準備`;
+
+        if (list.length === 0) {
+          container.innerHTML = `<p class="text-center text-xs text-warmgray py-6">目前分類尚無項目，快從下方新增吧！</p>`;
+          return;
+        }
+
+        container.innerHTML = list.map(item => `
+          <div class="flex items-center justify-between bg-milktea-light/60 px-3 py-2.5 rounded-2xl border border-milktea/70">
+            <div onclick="toggleBagItem(${item.id})" class="flex items-center gap-2.5 flex-1 cursor-pointer">
+              <div class="w-5 h-5 rounded-lg border-2 border-milktea-dark flex items-center justify-center ${item.checked ? 'bg-milktea-dark text-snow' : 'bg-snow'}">
+                ${item.checked ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+              </div>
+              <span class="text-xs font-bold ${item.checked ? 'line-through text-warmgray' : 'text-warmgray-dark'}">${item.name}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="changeBagQty(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-snow border border-milktea text-warmgray-dark text-xs font-bold">-</button>
+              <span class="text-xs font-black w-5 text-center">${item.qty}</span>
+              <button onclick="changeBagQty(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-snow border border-milktea text-warmgray-dark text-xs font-bold">+</button>
+              <button onclick="deleteBagItem(${item.id})" class="ml-1 text-warmgray hover:text-red-500 text-xs px-1">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function saveBagData() {
+        localStorage.setItem('czech_bag_data', JSON.stringify(bagData));
+        renderBagList();
+      }
+
+      function toggleBagItem(id) {
+        const item = bagData[currentBagCat].find(i => i.id === id);
+        if (item) item.checked = !item.checked;
+        saveBagData();
+      }
+
+      function changeBagQty(id, delta) {
+        const item = bagData[currentBagCat].find(i => i.id === id);
+        if (item) {
+          item.qty = Math.max(1, item.qty + delta);
+          saveBagData();
+        }
+      }
+
+      function deleteBagItem(id) {
+        bagData[currentBagCat] = bagData[currentBagCat].filter(i => i.id !== id);
+        saveBagData();
+      }
+
+      function addBagItem() {
+        const input = document.getElementById('new-item-input');
+        const val = input.value.trim();
+        if (!val) return;
+        bagData[currentBagCat].push({
+          id: Date.now(),
+          name: val,
+          qty: 1,
+          checked: false
+        });
+        input.value = '';
+        saveBagData();
+      }
+
+      // ==================== 憑證 Modal 開關 ====================
+      function openVoucherModal(title, hotel, desc) {
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-hotel').innerText = hotel;
+        document.getElementById('modal-desc').innerText = desc;
+        const modal = document.getElementById('voucher-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      function closeVoucherModal() {
+        const modal = document.getElementById('voucher-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+
+      // ==================== 天氣頁渲染邏輯 ====================
+      function renderWeatherPage() {
+        const container = document.getElementById('weather-list-container');
+        container.innerHTML = tripData.map(d => `
+          <div class="bg-snow rounded-3xl p-4 jp-shadow border border-milktea space-y-2.5">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-black bg-milktea text-milktea-deep px-2.5 py-0.5 rounded-full">DAY ${d.day} ・ ${d.date}</span>
+                <h3 class="text-sm font-black text-warmgray-dark mt-1">📍 ${d.weather.city}</h3>
+              </div>
+              <div class="text-right">
+                <div class="text-base font-black text-milktea-deep">${d.weather.temp}</div>
+                <div class="text-[11px] text-warmgray font-bold">體感 ${d.weather.feel}</div>
+              </div>
+            </div>
+
+            <!-- 氣象四格數據 -->
+            <div class="grid grid-cols-3 gap-2 bg-milktea-light/70 p-2.5 rounded-2xl text-center text-xs">
+              <div>
+                <span class="text-[10px] text-warmgray block">❄️ 降雪機率</span>
+                <span class="font-black text-sky-700">${d.weather.snowProb}</span>
+              </div>
+              <div class="border-x border-milktea">
+                <span class="text-[10px] text-warmgray block">🌡️ 體感溫度</span>
+                <span class="font-black text-warmgray-dark">${d.weather.feel}</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-warmgray block">⛄ 預估雪深</span>
+                <span class="font-black text-milktea-deep">${d.weather.snowDepth}</span>
+              </div>
+            </div>
+
+            <!-- 每日穿著建議 -->
+            <div class="text-xs bg-snow border border-milktea/80 rounded-2xl p-2.5 text-warmgray-dark">
+              <span class="font-bold text-milktea-deep"><i class="fa-solid fa-shirt mr-1"></i>穿著建議：</span>${d.outfit}
+            </div>
+          </div>
+        `).join('');
+      }
+    </script>
+  </body>
+</html>
